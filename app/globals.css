@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* This sets the height of the html, body, and :root elements to 100% of the viewport. */
+ 
 html,
 body,
 :root {

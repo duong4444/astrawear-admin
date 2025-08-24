@@ -1,6 +1,6 @@
 import CollectionForm from "@/components/collections/CollectionForm"
 
-// admin | /collections/new
+// "/collections/new"
 const CreateCollection = () => {
   return (
     <CollectionForm />

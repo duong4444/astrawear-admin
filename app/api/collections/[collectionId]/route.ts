@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 
 import { connectToDB } from "@/lib/mongoDB";
 import Collection from "@/lib/models/Collection";
-// import Product from "@/lib/models/Product";
+import Product from "@/lib/models/Product";
 
 export const GET = async (
   req: NextRequest,
@@ -12,7 +12,7 @@ export const GET = async (
   try {
     await connectToDB();
 
-    const collection = await Collection.findById(params.collectionId)
+    const collection = await Collection.findById(params.collectionId).populate({ path: "products", model: Product });
 
     if (!collection) {
       return new NextResponse(
@@ -82,6 +82,11 @@ export const DELETE = async (
     await connectToDB();
 
     await Collection.findByIdAndDelete(params.collectionId);
+
+    await Product.updateMany(
+      { collections: params.collectionId },
+      { $pull: { collections: params.collectionId } }
+    );
     
     return new NextResponse("Collection is deleted", { status: 200 });
   } catch (err) {
@@ -90,4 +95,5 @@ export const DELETE = async (
   }
 };
 
+// ép route đó luôn dynamic (không cache, render mỗi request).
 export const dynamic = "force-dynamic";

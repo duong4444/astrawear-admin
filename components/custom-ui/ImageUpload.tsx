@@ -7,7 +7,7 @@ import Image from "next/image";
 interface ImageUploadProps {
   value: string[];
   onChange: (value: string) => void;
-  onRemove: () => void;
+  onRemove: (value: string) => void;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -22,14 +22,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div>
-      {/* img preview */}
       <div className="mb-4 flex flex-wrap items-center gap-4">
         {value.map((url) => (
           <div key={url} className="relative w-[200px] h-[200px]">
             <div className="absolute top-0 right-0 z-10">
               <Button
                 type="button"
-                onClick={() => onRemove()}
+                onClick={() => onRemove(url)}
                 size="sm"
                 className="bg-red-1 text-white"
               >
@@ -46,7 +45,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         ))}
       </div>
 
-      <CldUploadWidget uploadPreset="astrawear" onSuccess={onUpload}>
+      <CldUploadWidget uploadPreset="astrawear" onUpload={onUpload}>
         {({ open }) => {
           return (
             <Button

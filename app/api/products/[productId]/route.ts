@@ -5,7 +5,6 @@ import { auth } from "@clerk/nextjs";
 
 import { NextRequest, NextResponse } from "next/server";
 
-// "api/products/id"
 export const GET = async (
   req: NextRequest,
   { params }: { params: { productId: string } }
@@ -14,7 +13,7 @@ export const GET = async (
     await connectToDB();
 
     const product = await Product.findById(params.productId).populate({
-      path: "collections", // field collections của Product _ populate đến model Collection
+      path: "collections",
       model: Collection,
     });
 
@@ -26,6 +25,11 @@ export const GET = async (
     }
     return new NextResponse(JSON.stringify(product), {
       status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": `${process.env.ECOMMERCE_STORE_URL}`,
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
     });
   } catch (err) {
     console.log("[productId_GET]", err);
@@ -171,3 +175,4 @@ export const DELETE = async (
 };
 
 export const dynamic = "force-dynamic";
+

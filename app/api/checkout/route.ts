@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
-
-export const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
-  typescript: true,
-});
+import { stripe } from "@/lib/stripe";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,9 +25,7 @@ export async function POST(req: NextRequest) {
       shipping_address_collection: {
         allowed_countries: ["US", "CA"],
       },
-      shipping_options: [
-        { shipping_rate: "shr_1S2V9wRsZBkjEc9sv6CMDA0x" },
-      ],
+      shipping_options: [{ shipping_rate: "shr_1S2V9wRsZBkjEc9sv6CMDA0x" }],
       line_items: cartItems.map((cartItem: any) => ({
         price_data: {
           currency: "cad",
